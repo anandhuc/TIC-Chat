@@ -1,6 +1,7 @@
 import 'package:dialog_flowtter/dialog_flowtter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:tic_chat/applications/dialog_flow/bloc/dialog_flow_bloc.dart';
 
 class ScreenChat extends StatelessWidget {
@@ -34,69 +35,83 @@ class ScreenChat extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-                Expanded(
-                    child: ListView.separated(
-                        keyboardDismissBehavior:
-                            ScrollViewKeyboardDismissBehavior.onDrag,
-                        itemBuilder: (context, index) => Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: state.messages[index]
-                                      ['isUserMessage']
-                                  ? MainAxisAlignment.end
-                                  : MainAxisAlignment.start,
-                              children: [
-                                state.messages[index]['isUserMessage']
-                                    ? const SizedBox()
-                                    : CircleAvatar(
-                                        radius: 15,
-                                        backgroundImage: AssetImage(
-                                            state.messages[index]
+                state.messages.isEmpty
+                    ? Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Lottie.asset('assets/lotties/main.json'),
+                          ],
+                        ),
+                      )
+                    : Expanded(
+                        child: ListView.separated(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            keyboardDismissBehavior:
+                                ScrollViewKeyboardDismissBehavior.onDrag,
+                            itemBuilder: (context, index) => Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: state.messages[index]
+                                          ['isUserMessage']
+                                      ? MainAxisAlignment.end
+                                      : MainAxisAlignment.start,
+                                  children: [
+                                    state.messages[index]['isUserMessage']
+                                        ? const SizedBox()
+                                        : CircleAvatar(
+                                            radius: 15,
+                                            backgroundImage: AssetImage(state
+                                                        .messages[index]
                                                     ['isUserMessage']
                                                 ? 'assets/images/7309681.jpg'
                                                 : 'assets/images/favicon.png'),
-                                      ),
-                                state.messages[index]['isUserMessage']
-                                    ? const SizedBox()
-                                    : const SizedBox(
-                                        width: 5,
-                                      ),
-                                Container(
-                                  constraints: BoxConstraints(
-                                      maxWidth:
-                                          MediaQuery.of(context).size.width *
+                                          ),
+                                    state.messages[index]['isUserMessage']
+                                        ? const SizedBox()
+                                        : const SizedBox(
+                                            width: 5,
+                                          ),
+                                    Container(
+                                      constraints: BoxConstraints(
+                                          maxWidth: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
                                               .8),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(8),
-                                      color: const Color.fromARGB(
-                                          255, 31, 44, 52)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 8),
-                                    child: Text(
-                                      state.messages[index]['message'],
-                                      style: const TextStyle(
-                                          fontSize: 15, color: Colors.white),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          color: const Color.fromARGB(
+                                              255, 31, 44, 52)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 12, vertical: 8),
+                                        child: Text(
+                                          state.messages[index]['message'],
+                                          style: const TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.white),
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                    state.messages[index]['isUserMessage']
+                                        ? const SizedBox(
+                                            width: 5,
+                                          )
+                                        : const SizedBox(),
+                                    state.messages[index]['isUserMessage']
+                                        ? const CircleAvatar(
+                                            radius: 15,
+                                            backgroundImage: AssetImage(
+                                                'assets/images/7309681.jpg'),
+                                          )
+                                        : const SizedBox()
+                                  ],
                                 ),
-                                state.messages[index]['isUserMessage']
-                                    ? const SizedBox(
-                                        width: 5,
-                                      )
-                                    : const SizedBox(),
-                                state.messages[index]['isUserMessage']
-                                    ? const CircleAvatar(
-                                        radius: 15,
-                                        backgroundImage: AssetImage(
-                                            'assets/images/7309681.jpg'),
-                                      )
-                                    : const SizedBox()
-                              ],
-                            ),
-                        separatorBuilder: (context, index) => SizedBox(
-                              height: MediaQuery.of(context).size.height * .015,
-                            ),
-                        itemCount: state.messages.length)),
+                            separatorBuilder: (context, index) => SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * .015,
+                                ),
+                            itemCount: state.messages.length)),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -135,13 +150,17 @@ class ScreenChat extends StatelessWidget {
                         builder: (context, state) {
                           return CircleAvatar(
                             radius: 25,
-                            backgroundColor: Colors.green,
+                            backgroundColor: Color.fromARGB(255, 0, 141, 77),
                             child: state.isLoading
-                                ? const Padding(
-                                    padding: EdgeInsets.all(8.0),
+                                ? SizedBox(
+                                    width: 20,
+                                    height: 20,
                                     child: CircularProgressIndicator(
                                       color: Colors.white,
+                                      strokeWidth: 1.5,
                                       backgroundColor: Colors.transparent,
+                                      strokeAlign: CircularProgressIndicator
+                                          .strokeAlignInside,
                                     ),
                                   )
                                 : IconButton(
@@ -150,6 +169,7 @@ class ScreenChat extends StatelessWidget {
                                           .add(SubmitQuery(
                                               query:
                                                   _controller.text.toString()));
+                                      _controller.clear();
                                     },
                                     icon: const Icon(Icons.send_rounded,
                                         color: Colors.white)),

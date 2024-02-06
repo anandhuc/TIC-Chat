@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "214911366951",
+    "project_id": "tic-chat-af86f",
+    "storage_bucket": "tic-chat-af86f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:214911366951:android:27833338a2b8058f749b02",
+        "android_client_info": {
+          "package_name": "com.example.tic_chat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKPB1FXDnKbgpaUhgIMpvPRiQIIxifKZA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
